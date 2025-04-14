@@ -54,7 +54,7 @@ Write unit tests for all functions in the tools directory. Store tests in the te
 Use pytest for testing and ensure that tests cover a range of possible inputs, including edge cases.
 Run tests locally before pushing changes to ensure nothing is broken.
 
-You can convenienty run the test suite in the commandline using
+You can conveniently run the test suite in the commandline using
 `make test`
 
 6. Pre-Commit
