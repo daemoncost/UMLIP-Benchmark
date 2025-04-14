@@ -23,7 +23,7 @@ def main(args):
     )
     print(
         f"Writing Input files for structure file {args.input_structure}"
-        "generated in {args.output_dir} with cutoff energy {args.ENCUT} eV."
+        f"generated in {args.output_dir} with cutoff energy {args.ENCUT} eV."
     )
 
 
