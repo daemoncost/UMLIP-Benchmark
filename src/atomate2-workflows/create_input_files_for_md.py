@@ -1,11 +1,20 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 
 from atomate2.vasp.sets.core import MDSetGenerator
 from pymatgen.core.structure import Structure
 from pymatgen.io.vasp.sets import MPRelaxSet
 
 
-def main(args):
+def write_input_files(args: Namespace) -> None:
+    """
+    Generate VASP input files for a molecular dynamics simulation.
+
+    Parameters
+    ----------
+    args : Namespace
+        Command line arguments with keys: input_structure, output_dir, start_temp,
+        end_temp, time_step, nsteps, ENCUT.
+    """
     structure = Structure.from_file(args.input_structure)
     MPSetGGAMPGenerator = MDSetGenerator(
         structure=structure,
@@ -27,29 +36,40 @@ def main(args):
     )
 
 
-parser = ArgumentParser(
-    description="Generate VASP input files for MD"
-    "simulations. Do not forget to set the"
-    "PMG_VASP_PSP_DIR in .pmgrc.yaml"
-)
-parser.add_argument(
-    "--input_structure", type=str, help="Path to the input structure file."
-)
-parser.add_argument(
-    "--output_dir", type=str, help="Directory to save the generated input files."
-)
-parser.add_argument(
-    "--start_temp", type=float, default=300, help="Starting temperature in K."
-)
-parser.add_argument(
-    "--end_temp", type=float, default=300, help="Ending temperature in K."
-)
-parser.add_argument("--nsteps", type=int, default=10, help="Number of MD steps.")
-parser.add_argument(
-    "--ENCUT", type=float, default=520, help="Plane-wave cutoff energy in eV."
-)
-parser.add_argument(
-    "--time_step", type=float, default=1, help="Time step for MD in fs."
-)
-args = parser.parse_args()
-main(args)
+def parse_arguments() -> Namespace:
+    """Parse command-line arguments."""
+    parser = ArgumentParser(
+        description="Generate VASP input files for MD"
+        "simulations. Do not forget to set the"
+        "PMG_VASP_PSP_DIR in .pmgrc.yaml"
+    )
+    parser.add_argument(
+        "--input_structure", type=str, help="Path to the input structure file."
+    )
+    parser.add_argument(
+        "--output_dir", type=str, help="Directory to save the generated input files."
+    )
+    parser.add_argument(
+        "--start_temp", type=float, default=300, help="Starting temperature in K."
+    )
+    parser.add_argument(
+        "--end_temp", type=float, default=300, help="Ending temperature in K."
+    )
+    parser.add_argument("--nsteps", type=int, default=10, help="Number of MD steps.")
+    parser.add_argument(
+        "--ENCUT", type=float, default=520, help="Plane-wave cutoff energy in eV."
+    )
+    parser.add_argument(
+        "--time_step", type=float, default=1.0, help="Time step for MD in fs."
+    )
+    args = parser.parse_args()
+    return args
+
+
+def main() -> None:
+    args = parse_arguments()
+    write_input_files(args)
+
+
+if __name__ == "__main__":
+    main()
