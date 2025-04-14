@@ -18,6 +18,6 @@ jobs:
           cache: 'pip'
       - name: Install dependencies
         run: |
-          pip install -e 
+          pip install -e '.[main]' 
       - name: Run pre-commit hooks
         run: SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure
