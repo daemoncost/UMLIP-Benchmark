@@ -3,27 +3,26 @@ Run molecular dynamics simulation using ASE and MACE.
 Adapted from Venkat Kapil's ASE-MACE example.
 """
 
-import sys
 import json
+import sys
 from argparse import ArgumentParser, Namespace
 from pathlib import Path
 
+import mace
 from ase import units
 from ase.io import read, write
 from ase.io.trajectory import Trajectory
 from ase.md import MDLogger
 from ase.md.langevin import Langevin
 from ase.md.velocitydistribution import MaxwellBoltzmannDistribution
-
-import mace
 from mace.calculators import mace_mp
 from monty.json import jsanitize
-
 
 REQUIRED_MACE_VERSION = "0.3.12"
 if mace.__version__ != REQUIRED_MACE_VERSION:
     raise RuntimeError(
-        f"mace-torch version {REQUIRED_MACE_VERSION} required, but found {mace.__version__}"
+        f"mace-torch version {REQUIRED_MACE_VERSION} required,"
+        f" but found {mace.__version__}"
     )
 
 
@@ -63,10 +62,7 @@ def run_md(args: Namespace) -> None:
 
     # Set up the Langevin dynamics.
     dyn = Langevin(
-        atoms,
-        timestep=timestep,
-        temperature_K=temperature,
-        friction=friction
+        atoms, timestep=timestep, temperature_K=temperature, friction=friction
     )
 
     # Write the trajectory.
@@ -91,31 +87,22 @@ def parse_arguments() -> Namespace:
         "--input_structure",
         type=str,
         required=True,
-        help="Path to the input structure file."
+        help="Path to the input structure file.",
     )
     parser.add_argument(
         "--output_dir",
         type=Path,
         required=True,
-        help="Directory to save the generated input files."
+        help="Directory to save the generated input files.",
     )
     parser.add_argument(
-        "--start_temp",
-        type=float,
-        default=300,
-        help="Starting temperature in K."
+        "--start_temp", type=float, default=300, help="Starting temperature in K."
     )
     parser.add_argument(
-        "--end_temp",
-        type=float,
-        default=300,
-        help="Ending temperature in K."
+        "--end_temp", type=float, default=300, help="Ending temperature in K."
     )
     parser.add_argument(
-        "--time_step",
-        type=float,
-        default=1,
-        help="Time step for MD in fs."
+        "--time_step", type=float, default=1, help="Time step for MD in fs."
     )
     return parser.parse_args()
 

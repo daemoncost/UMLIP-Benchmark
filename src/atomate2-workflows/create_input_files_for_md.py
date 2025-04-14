@@ -1,9 +1,8 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 
 from atomate2.vasp.sets.core import MDSetGenerator
 from pymatgen.core.structure import Structure
 from pymatgen.io.vasp.sets import MPRelaxSet
-from argparse import Namespace
 
 
 def write_input_files(args: Namespace) -> None:
@@ -36,6 +35,7 @@ def write_input_files(args: Namespace) -> None:
         f"generated in {args.output_dir} with cutoff energy {args.ENCUT} eV."
     )
 
+
 def parse_arguments() -> Namespace:
     """Parse command-line arguments."""
     parser = ArgumentParser(
@@ -60,7 +60,7 @@ def parse_arguments() -> Namespace:
         "--ENCUT", type=float, default=520, help="Plane-wave cutoff energy in eV."
     )
     parser.add_argument(
-        "--time_step", type=float, default=1, help="Time step for MD in fs."
+        "--time_step", type=float, default=1.0, help="Time step for MD in fs."
     )
     args = parser.parse_args()
     return args
