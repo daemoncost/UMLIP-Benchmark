@@ -1,0 +1,9 @@
+*~
+*__*cache__*
+*.pyc
+*egg*
+*POTCAR*
+*__pycache__*
+.coverage
+*build
+
