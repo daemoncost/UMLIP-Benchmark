@@ -1,0 +1,10 @@
+*~
+*__*cache__*
+*.pyc
+*egg*
+*__pycache__*
+*backup
+.coverage
+*test_coverage_html_report
+*build
+
