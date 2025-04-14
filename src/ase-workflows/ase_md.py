@@ -99,9 +99,6 @@ def parse_arguments() -> Namespace:
         "--start_temp", type=float, default=300, help="Starting temperature in K."
     )
     parser.add_argument(
-        "--end_temp", type=float, default=300, help="Ending temperature in K."
-    )
-    parser.add_argument(
         "--time_step", type=float, default=1, help="Time step for MD in fs."
     )
     return parser.parse_args()
