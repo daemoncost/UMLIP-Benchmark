@@ -8,7 +8,7 @@ pip install -e .
 
 
 ## Usage
-Usage instructions will be provided later. Please check back for updates.
+to use the src/atomate2-workflows/create_inputs.py script set PMG_VASP_PSP_DIR in .pmgrc.yaml  
 
 ## Contributing
 Contributions are welcome from anyone. The current contributors to this project are:
