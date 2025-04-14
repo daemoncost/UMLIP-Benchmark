@@ -16,3 +16,8 @@ jobs:
         with:
           python-version: '3.10'
           cache: 'pip'
+      - name: Install dependencies
+        run: |
+          pip install -e 
+      - name: Run pre-commit hooks
+        run: SKIP=no-commit-to-branch pre-commit run --all-files --show-diff-on-failure

@@ -44,9 +44,7 @@ parser.add_argument(
 parser.add_argument(
     "--end_temp", type=float, default=300, help="Ending temperature in K."
 )
-parser.add_argument(
-    "--nsteps", type=int, default=10, help="Number of MD steps."
-)
+parser.add_argument("--nsteps", type=int, default=10, help="Number of MD steps.")
 parser.add_argument(
     "--ENCUT", type=float, default=520, help="Plane-wave cutoff energy in eV."
 )
