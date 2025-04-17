@@ -24,7 +24,7 @@ def write_input_files(args: Namespace) -> None:
         time_step=args.time_step,
         nsteps=args.nsteps,
         user_potcar_functional="PBE_64",
-        user_incar_settings={"ENCUT": args.ENCUT},
+        user_incar_settings={"ENCUT": args.ENCUT, "ISPIN": 1},
         config_dict=MPRelaxSet.CONFIG,
     )
     MPSetGGAMPGenerator.write_input(
