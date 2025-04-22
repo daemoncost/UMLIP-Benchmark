@@ -1,7 +1,8 @@
 from argparse import ArgumentParser, Namespace
 
+from ase.io import read
 from atomate2.vasp.sets.core import MDSetGenerator
-from pymatgen.core.structure import Structure
+from pymatgen.io.ase import AseAtomsAdaptor
 from pymatgen.io.vasp.sets import MPRelaxSet
 
 
@@ -15,7 +16,10 @@ def write_input_files(args: Namespace) -> None:
         Command line arguments with keys: input_structure, output_dir, start_temp,
         end_temp, time_step, nsteps, ENCUT.
     """
-    structure = Structure.from_file(args.input_structure)
+    atoms = read(args.input_structure)
+    structure = AseAtomsAdaptor.get_structure(atoms)
+    structure.add_site_property("velocities", atoms.get_velocities())
+
     MPSetGGAMPGenerator = MDSetGenerator(
         structure=structure,
         ensemble="NVT",
