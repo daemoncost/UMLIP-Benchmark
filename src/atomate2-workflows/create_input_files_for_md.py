@@ -27,7 +27,7 @@ def write_input_files(args: Namespace) -> None:
         end_temp=args.end_temp,
         time_step=args.time_step,
         nsteps=args.nsteps,
-        user_potcar_functional="PBE_64",
+        user_potcar_functional=args.potcar_functional,
         user_incar_settings={"ENCUT": args.ENCUT, "ISPIN": 1, "PREC": "Accurate"},
         config_dict=MPRelaxSet.CONFIG,
     )
@@ -51,7 +51,7 @@ def parse_arguments() -> Namespace:
         "--input_structure", type=str, help="Path to the input structure file."
     )
     parser.add_argument(
-        "--output_dir", type=str, help="Directory to save the generated input files."
+        "--output_dir", type=str, default="./", help="Directory to save the generated input files."
     )
     parser.add_argument(
         "--start_temp", type=float, default=300, help="Starting temperature in K."
@@ -65,6 +65,9 @@ def parse_arguments() -> Namespace:
     )
     parser.add_argument(
         "--time_step", type=float, default=1.0, help="Time step for MD in fs."
+    )
+    parser.add_argument(
+        "--potcar_functional", type=str, default="PBE_64", help="POTCAR functional type."
     )
     args = parser.parse_args()
     return args
