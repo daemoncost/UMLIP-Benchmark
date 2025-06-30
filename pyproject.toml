@@ -13,12 +13,17 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
 ]
+
 dynamic = [
     "dependencies",
     "description",
     "optional-dependencies",
     "readme",
 ]
+
+[project.scripts]
+create-md-inputs = "atomate2_workflows.create_input_files:main"
+
 
 [tool.setuptools.packages.find]
 where = ["src"]
