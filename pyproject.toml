@@ -22,7 +22,7 @@ dynamic = [
 ]
 
 [project.scripts]
-create-md-inputs = "atomate2_workflows.create_input_files:main"
+create-inputs = "atomate2_workflows.create_input_files:main"
 
 
 [tool.setuptools.packages.find]
