@@ -102,7 +102,7 @@ def write_input_files(args: Namespace) -> None:
         print(
             "Writing Input files for relaxation of structure"
             f" file {args.input_structure}"
-            f"in {args.output_dir}."
+            f" in {args.output_dir}."
         )
     else:
         MPSetGGAMPGenerator.write_input(
