@@ -3,10 +3,38 @@
 import warnings
 from argparse import ArgumentParser, Namespace
 
-from ase.io import read
 from atomate2.vasp.sets.core import MDSetGenerator, RelaxSetGenerator
 from pymatgen.io.ase import AseAtomsAdaptor
 from pymatgen.io.vasp.sets import MPRelaxSet
+from pymatgen.core import Structure
+
+
+
+def rescale_density(structure: Structure, target_density: float) -> Structure:
+    """
+    Return a new Structure with lattice scaled such that its mass density matches the target density.
+
+    The atomic positions are scaled accordingly so the structure's shape and fractional coordinates remain unchanged.
+    The composition and symmetry are preserved. This operation only changes the lattice volume.
+
+    Args:
+        structure (Structure): The input pymatgen Structure object.
+        target_density (float): Desired mass density in g/cm^3.
+
+    Returns:
+        Structure: A new Structure object with rescaled lattice matching the target density.
+    
+    Example:
+        >>> from pymatgen.core import Structure
+        >>> struct = Structure.from_file("POSCAR")
+        >>> new_struct = rescale_density(struct, 7.5)
+        >>> print(new_struct.density)
+        7.5
+    """
+    current_density = structure.density  # in g/cm^3
+    new_volume = structure.lattice.volume * (current_density / target_density)
+    structure.scale_lattice(float(new_volume))
+    return structure
 
 
 def write_input_files(args: Namespace) -> None:
@@ -19,13 +47,20 @@ def write_input_files(args: Namespace) -> None:
         Command line arguments with keys: input_structure, output_dir, start_temp,
         end_temp, time_step, nsteps, ENCUT.
     """
-    atoms = read(args.input_structure)
-    structure = AseAtomsAdaptor.get_structure(atoms)
-    structure.add_site_property("velocities", atoms.get_velocities())
+    structure = Structure.from_file(args.input_structure)
+    # Rescale the structure to a target density before relaxation
+    if args.density is not None:
+        structure = rescale_density(structure, args.density) 
+    else:
+        warnings.warn(
+            "No target density provided. Using the original structure density."
+        )
+
     MPRelaxSetGenerator = RelaxSetGenerator(
         structure=structure,
         user_potcar_functional="PBE_64",
         user_incar_settings={
+            "ISIF": 4,
             "EDIFF": 1e-6,
             "ENCUT": 700,
             "ISPIN": 1,
@@ -98,6 +133,11 @@ def parse_arguments() -> Namespace:
         " then use the CONTCAR file"
         " to run the MD simulation"
         " if your system contains hydrogen consider using a smaller timestep (0.5 fs) "
+    )
+    parser.add_argument(
+        "--density",
+        type=float,
+        help="Target density in g/cm^3 for rescaling the structure."
     )
     parser.add_argument(
         "--write_relax_input",

@@ -8,7 +8,10 @@ pip install -e .
 
 
 ## Usage
-to use the src/atomate2-workflows/create_inputs.py script set PMG_VASP_PSP_DIR in .pmgrc.yaml  
+To create inputs for the MD or relaxation use the create-inputs command.    
+It will rescale the density and create inputs for a relaxation (--write_relax_input) at that fixed density and for the MD simulation.
+
+For benchmark data use the src/atomate2_workflows/create_inputs_files_for_benchmark.py script set PMG_VASP_PSP_DIR in .pmgrc.yaml  
 
 ## Contributing
 Contributions are welcome from anyone. The current contributors to this project are:
