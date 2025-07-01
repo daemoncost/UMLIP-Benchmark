@@ -74,7 +74,7 @@ def write_input_files(args: Namespace) -> None:
                 print(
                     f"Writing Input files for structure file {args.input_structure}"
                     f"generated in {input_dir_path} with LREAL=False,"
-                    "cutoff energy {ENCUT} eV."
+                    f"cutoff energy {ENCUT} eV."
                     f"Density {density} kpoints."
                 )
 
