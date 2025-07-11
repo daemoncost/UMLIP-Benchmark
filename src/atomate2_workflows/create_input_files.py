@@ -60,7 +60,7 @@ def write_input_files(args: Namespace) -> None:
 
     MPRelaxSetGenerator = RelaxSetGenerator(
         structure=structure,
-        user_potcar_functional="PBE_64",
+        user_potcar_functional= args.potcar_functional,
         user_incar_settings={
             "ISIF": 4,
             "EDIFF": 1e-6,
@@ -81,7 +81,7 @@ def write_input_files(args: Namespace) -> None:
         end_temp=args.end_temp,
         time_step=1,
         nsteps=args.nsteps,
-        user_potcar_functional="PBE_64",
+        user_potcar_functional= args.potcar_functional,
         user_incar_settings={
             "EDIFF": 1e-6,
             "ENCUT": 700,
@@ -169,6 +169,9 @@ def parse_arguments() -> Namespace:
         "--end_temp", type=float, default=300, help="Ending temperature in K."
     )
     parser.add_argument("--nsteps", type=int, default=10, help="Number of MD steps.")
+    parser.add_argument(
+        "--potcar_functional", type=str, default="PBE_64", help="POTCAR functional type."
+    )
     args = parser.parse_args()
     return args
 
