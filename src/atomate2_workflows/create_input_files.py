@@ -53,14 +53,18 @@ def write_input_files(args: Namespace) -> None:
     # Rescale the structure to a target density before relaxation
     if args.density is not None:
         structure = rescale_density(structure, args.density)
+        if args.system_type == "molecule":
+            raise RuntimeError(
+                "Rescaling density is likely not appropriate for molecular systems."
+            )
     else:
         warnings.warn(
-            "No target density provided. Using the original structure" " density."
+            "No target density provided. Using the original density."
         )
 
     MPRelaxSetGenerator = RelaxSetGenerator(
         structure=structure,
-        user_potcar_functional= args.potcar_functional,
+        user_potcar_functional=args.potcar_functional,
         user_incar_settings={
             "ISIF": 4,
             "EDIFF": 1e-6,
@@ -74,14 +78,17 @@ def write_input_files(args: Namespace) -> None:
         },
         config_dict=MPRelaxSet.CONFIG,
     )
+    time_step = 1  # Default time step for MD simulations
+    if args.system_type == "molecule":
+        time_step = 0.5
     MPSetGGAMPGenerator = MDSetGenerator(
         structure=structure,
         ensemble="NVT",
         start_temp=args.start_temp,
         end_temp=args.end_temp,
-        time_step=1,
+        time_step=time_step,
         nsteps=args.nsteps,
-        user_potcar_functional= args.potcar_functional,
+        user_potcar_functional=args.potcar_functional,
         user_incar_settings={
             "EDIFF": 1e-6,
             "ENCUT": 700,
@@ -140,7 +147,7 @@ def parse_arguments() -> Namespace:
     parser.add_argument(
         "--density",
         type=float,
-        help="Target density in g/cm^3 for rescaling the structure.",
+        help="Target density in g/cm^3 for rescaling the crystal structure.",
     )
     parser.add_argument(
         "--write_relax_input",
@@ -170,7 +177,17 @@ def parse_arguments() -> Namespace:
     )
     parser.add_argument("--nsteps", type=int, default=10, help="Number of MD steps.")
     parser.add_argument(
-        "--potcar_functional", type=str, default="PBE_64", help="POTCAR functional type."
+        "--potcar_functional",
+        type=str,
+        default="PBE_64",
+        help="POTCAR functional type.",
+    )
+    parser.add_argument(
+        "--system_type",
+        type=str,
+        choices=["bulk", "molecule"],
+        default="bulk",
+        help="Type of system: 'bulk' or 'molecule'",
     )
     args = parser.parse_args()
     return args
