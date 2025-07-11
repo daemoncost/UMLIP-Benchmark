@@ -187,7 +187,8 @@ def parse_arguments() -> Namespace:
         type=str,
         choices=["bulk", "molecule"],
         default="bulk",
-        help="Type of system: 'bulk' or 'molecule'",
+        help="Type of system: 'bulk' or 'molecule' in case of molecular"
+             " system the time step will be set to 0.5 fs.",
     )
     args = parser.parse_args()
     return args
