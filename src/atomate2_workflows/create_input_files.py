@@ -58,9 +58,7 @@ def write_input_files(args: Namespace) -> None:
                 "Rescaling density is likely not appropriate for molecular systems."
             )
     else:
-        warnings.warn(
-            "No target density provided. Using the original density."
-        )
+        warnings.warn("No target density provided. Using the original density.")
 
     MPRelaxSetGenerator = RelaxSetGenerator(
         structure=structure,
@@ -188,7 +186,7 @@ def parse_arguments() -> Namespace:
         choices=["bulk", "molecule"],
         default="bulk",
         help="Type of system: 'bulk' or 'molecule' in case of molecular"
-             " system the time step will be set to 0.5 fs.",
+        " system the time step will be set to 0.5 fs.",
     )
     args = parser.parse_args()
     return args
