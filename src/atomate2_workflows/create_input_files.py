@@ -68,7 +68,7 @@ def write_input_files(args: Namespace) -> None:
             "EDIFF": 1e-6,
             "ENCUT": 700,
             "ISPIN": 1,
-            "KSPACING": 1 / 12.0,
+            "KSPACING": 0.22,
             "ISMEAR": 0,
             "SIGMA": 0.05,
             "KPAR": args.KPAR,
