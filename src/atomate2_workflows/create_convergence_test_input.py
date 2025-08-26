@@ -1,5 +1,4 @@
 import os
-
 from argparse import ArgumentParser, Namespace
 
 from ase.io import read
@@ -35,7 +34,9 @@ def write_input_files(args: Namespace) -> None:
                 user_kpoints_settings={"reciprocal_density": density},
                 config_dict=MPRelaxSet.CONFIG,
             )
-            input_dir_path = os.path.join(args.output_dir,f"ENCUT_{ENCUT}_reciprocal_kdensity_{density}")
+            input_dir_path = os.path.join(
+                args.output_dir, f"ENCUT_{ENCUT}_reciprocal_kdensity_{density}"
+            )
             MPSetGGAMPGenerator.write_input(
                 output_dir=input_dir_path,
             )
@@ -44,27 +45,36 @@ def write_input_files(args: Namespace) -> None:
                 f"generated in {input_dir_path} with cutoff energy {ENCUT} eV."
                 f"Density {density} kpoints."
             )
-            if ENCUT==700 and density==128:
-                if ENCUT==700 and density==128:
-                                MPSetGGAMPGenerator = MDSetGenerator(
-                    structure=structure,
-                    ensemble="NVT",
-                    start_temp=args.start_temp,
-                    end_temp=args.end_temp,
-                    time_step=args.time_step,
-                    nsteps=args.nsteps,
-                    user_potcar_functional=args.potcar_functional,
-                    user_incar_settings={"ENCUT": ENCUT, "ISPIN": 1, "PREC": "Accurate", "LREAL":False},
-                    user_kpoints_settings={"reciprocal_density": density},
-                    config_dict=MPRelaxSet.CONFIG,
+            if ENCUT == 700 and density == 128:
+                if ENCUT == 700 and density == 128:
+                    MPSetGGAMPGenerator = MDSetGenerator(
+                        structure=structure,
+                        ensemble="NVT",
+                        start_temp=args.start_temp,
+                        end_temp=args.end_temp,
+                        time_step=args.time_step,
+                        nsteps=args.nsteps,
+                        user_potcar_functional=args.potcar_functional,
+                        user_incar_settings={
+                            "ENCUT": ENCUT,
+                            "ISPIN": 1,
+                            "PREC": "Accurate",
+                            "LREAL": False,
+                        },
+                        user_kpoints_settings={"reciprocal_density": density},
+                        config_dict=MPRelaxSet.CONFIG,
+                    )
+                input_dir_path = os.path.join(
+                    args.output_dir,
+                    f"LREAL_ENCUT_{ENCUT}_reciprocal_kdensity_{density}",
                 )
-                input_dir_path = os.path.join(args.output_dir,f"LREAL_ENCUT_{ENCUT}_reciprocal_kdensity_{density}")
                 MPSetGGAMPGenerator.write_input(
                     output_dir=input_dir_path,
                 )
                 print(
                     f"Writing Input files for structure file {args.input_structure}"
-                    f"generated in {input_dir_path} with LREAL=False, cutoff energy {ENCUT} eV."
+                    f"generated in {input_dir_path} with LREAL=False,"
+                    f"cutoff energy {ENCUT} eV."
                     f"Density {density} kpoints."
                 )
 
@@ -81,7 +91,10 @@ def parse_arguments() -> Namespace:
         "--input_structure", type=str, help="Path to the input structure file."
     )
     parser.add_argument(
-        "--output_dir", type=str, default="./", help="Directory to save the generated input files."
+        "--output_dir",
+        type=str,
+        default="./",
+        help="Directory to save the generated input files.",
     )
     parser.add_argument(
         "--start_temp", type=float, default=300, help="Starting temperature in K."
@@ -94,7 +107,10 @@ def parse_arguments() -> Namespace:
         "--time_step", type=float, default=1.0, help="Time step for MD in fs."
     )
     parser.add_argument(
-        "--potcar_functional", type=str, default="PBE_64", help="POTCAR functional type."
+        "--potcar_functional",
+        type=str,
+        default="PBE_64",
+        help="POTCAR functional type.",
     )
     args = parser.parse_args()
     return args
