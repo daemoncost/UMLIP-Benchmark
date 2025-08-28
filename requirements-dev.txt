@@ -1,3 +1,4 @@
 pre-commit
 atomate2
-
+pytest
+ase
